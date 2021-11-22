@@ -75,7 +75,7 @@ PUT /actors_db/
        }
    }
    
-   # checking the custom analyzer(stopwords, stemming)
+# checking the custom analyzer(stopwords, stemming)
 GET /actors_db/_analyze
 {
  "text": ["மிகவும்சிறப்பான 10 தமிழ்த்திரைப்படநடிகர்கள்"],
@@ -89,6 +89,117 @@ POST /_bulk
 { "index" : { "_index" : "actors_db", "_type" : "actors", "_id" :2 } }
 {"நடிகர்":"கார்த்திக் சிவகுமார் ","அறிமுகஆண்டு":"2007","அறிமுகதிரைபடம்":"பருத்திவீரன்","பாலினம்":"ஆண்","குறிப்பிடத்தக்க படங்கள்":"பருத்தி வீரன்,ஆயிரத்தில் ஒருவன்,பையா, நான் மகான் அல்ல,சகுனி, கொம்பன்,காற்று வெளியிடை","பிறப்பு":"1977","அகவை":"44","பிறந்த இடம்":"சென்னை, தமிழ்நாடு, இந்தியா","பணி":"நடிகர்","திரைப்பட எண்ணிக்கை":"30"  }
 
+# Using custom indexing for search
+# பிரித்வராஜ் details with spelling mistake
+GET /actors_db/actors/_search
+{
+   "query": {
+       "multi_match" : {
+           "query" : "பிரித்ராவஜ்",
+           "fuzziness": "AUTO",
+       "analyzer": "my_analyzer"
+       }
+   }
+}
+
+# Using standard indexing for search
+# பிரித்வராஜ் details with spelling mistake
+GET /actors_db/actors/_search
+{
+   "query": {
+       "multi_match" : {
+           "query" : "பிரித்ராவஜ்",
+           "fuzziness": "AUTO",
+       "analyzer": "standard"
+       }
+   }
+}
+
+# top 10 actors introduced within 1990 to 2010 using திரைப்பட எண்ணிக்கை"
+GET /actors_db/actors/_search
+{
+   "size" : 10,
+    "sort" : [
+       { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+   "query": {
+       "range" : {
+           "அறிமுகஆண்டு" : {
+               "gte" : "1990",
+               "lte" :  "2010"
+           }
+       }
+   }
+}
+
+# top 10 actors born within 1970 to 1990 using திரைப்பட எண்ணிக்கை"
+GET /actors_db/actors/_search
+{
+   "size" : 10,
+    "sort" : [
+       { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+   "query": {
+       "range" : {
+           "பிறப்பு" : {
+               "gte" : "1970",
+               "lte" :  "1990"
+           }
+       }
+   }
+}
+
+# top 10 actors born with in 1980 to 1990 filter output
+GET /actors_db/actors/_search?filter_path=hits.hits._source.நடிகர்,hits.hits._source.அறிமுகதிரைபடம்,hits.hits._source.பிறப்பு
+{
+  
+   "size" : 10,
+    "sort" : [
+       { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+   "query": {
+       "range" : {
+           "பிறப்பு" : {
+               "gte" : "1980",
+               "lte" :  "1990"
+           }
+       }
+   }
+}
+
+# top 10 actors introduced within 2000 to 2010 filter output
+GET /actors_db/actors/_search
+{
+   "_source":["நடிகர்", "அறிமுகஆண்டு","அறிமுகதிரைபடம்" ],
+   "size" : 10,
+    "sort" : [
+       { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+   "query": {
+       "range" : {
+           "அறிமுகஆண்டு" : {
+               "gte" : "2000",
+               "lte" :  "2010"
+           }
+       }
+   }
+}
+
+#  top 10 actors introduced from 2010
+GET /actors_db/actors/_search
+{
+   "size":10,
+   "sort" : [
+        { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+   "query": {
+       "multi_match": {
+             "query" : "2010",
+           "fields":["அறிமுகஆண்டு"],
+           "fuzziness": "AUTO"
+       }
+   }
+}
 
 ```
   
