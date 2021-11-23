@@ -202,18 +202,167 @@ GET /actors_db/actors/_search
 }
 
 # நகைச்சுவைநடிகர் actors born in chennai 
+# comedy actors born in chennai 
 GET /actors_db/_search
 {
+"_source":["நடிகர்", "அறிமுகஆண்டு","அறிமுகதிரைபடம்","பணி" ],
 "query": {
   "bool": {
         "must": [
             { "match": { "பணி": "நகைச்சுவைநடிகர்" }},
             { "match": { "பிறந்த இடம்":"சென்னை" }}
+            
         ]
       }
     } 
 }
 
+
+# கனாகண்டேன் நடித்த ஆனால் கனாகண்டேன் அறிமுகமாகாத நடிகர்கள்
+GET /actors_db/_search
+{
+ "query": {
+   "bool": {
+     "must": {
+       "bool" : { 
+        "must": { "match": { "குறிப்பிடத்தக்க படங்கள்": "கனாகண்டேன்"}}
+       }
+     },
+     "must_not": { "match": { "அறிமுகதிரைபடம்": "கனாகண்டேன்"}}
+   }
+ },
+ "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்"]
+}
+
+
+
+#40 வயதுக்கு அதிகமான சென்னையில் பிறக்காத பின்னணிப் பாடகராகவும் இயக்குனராக உள்ள நடிகர்கள்
+GET /actors_db/_search
+{
+ "query": {
+   "bool": {
+     "must": {
+       "bool" : { 
+         "should": [
+           { "match": { "பணி": "பின்னணிபாடகர்" }},
+           { "match": { "பணி": "இயக்குனர்" }} 
+         ],
+         "filter": [ 
+            {
+            "range": {
+            "அகவை" : {
+               "gte" : "40"
+                  }
+                }
+           }
+        ]
+      }
+    },
+      "must_not": { "match":  { "பிறந்த இடம்":"சென்னை" }}
+   }
+ 
+ },
+  "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
+ }
+ 
+ 
+ #நடிகர் name ending in ன்
+GET /songs_db/_search
+{
+   "query": {
+       "wildcard" : {
+           "நடிகர்" : "*ன்"
+       }
+   },
+   "_source": ["நடிகர்"],
+   "highlight": {
+       "fields" : {
+           "நடிகர்" : {}
+       }
+   }
+}
+
+#நடிகர் name starting with வி
+GET /actors_db/_search
+{
+   "query": {
+       "wildcard" : {
+           "நடிகர்" : "வி*"
+       }
+   },
+   "_source": ["நடிகர்"],
+   "highlight": {
+       "fields" : {
+           "நடிகர்" : {}
+       }
+   }
+}
+
+ 
+# top 10 Actors who are also directors
+GET /actors_db/_search
+{
+ "size":10,
+   "sort" : [
+       { "திரைப்பட எண்ணிக்கை" : {"order" : "desc"}}
+   ],
+ "query": {
+   "multi_match" : {
+     "query":    "இயக்குனர்",
+     "fields":["பணி"],
+     "fuzziness": "AUTO"
+   }
+ },
+  "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
+}
+
+#LATEST actors introduced after 2000
+GET /actors_db/_search
+{
+   "query": {
+       "range": {
+           "அறிமுகஆண்டு" : {
+               "gte" : "2000"
+           }
+       }
+   },
+   "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
+}
+
+# search actors by movie
+GET /actors_db/_search
+{
+   "query": {
+       "multi_match": {
+           "fields":["குறிப்பிடத்தக்க படங்கள்"],
+           "query" : "கண்ணாமூச்சிஏனடா",
+           "fuzziness": "AUTO"
+       }
+   },
+    "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்" ]
+}
+
+#term query for exact match
+GET /actors_db/_search
+{
+ "query": {
+   "term": {
+     "குறிப்பிடத்தக்க படங்கள்":"ஈரம்"
+   }
+ },
+ "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்" ]
+}
+
+# for multiple indexes(databases) search
+GET /_all/_search
+{
+ "query": {
+   "term": {
+     "குறிப்பிடத்தக்க படங்கள்":"புதுப்பேட்டை"
+   }
+ },
+ "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்" ]
+}
 
 ```
   
