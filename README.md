@@ -201,6 +201,20 @@ GET /actors_db/actors/_search
    }
 }
 
+# comedy actors born in chennai 
+GET /actors_db/_search
+{
+"query": {
+  "bool": {
+        "must": [
+            { "match": { "பணி": "நகைச்சுவைநடிகர்" }},
+            { "match": { "பிறந்த இடம்":"சென்னை" }}
+        ]
+      }
+    } 
+}
+
+
 ```
   
    
