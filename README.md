@@ -82,6 +82,31 @@ GET /actors_db/_analyze
  "text": ["மிகவும்சிறப்பான 10 தமிழ்த்திரைப்படநடிகர்கள்"],
  "analyzer": "my_analyzer"
 }
+GET /actors_db/_analyze
+{
+ "text": ["மிகவும் சிறந்த 10 நடிகர்கள்"],
+ "analyzer": "my_analyzer"
+}
+
+GET /actors_db/_analyze
+{
+ "text": ["இதை விட  சிறந்த 10 நடிகர்கள்"],
+ "analyzer": "my_analyzer"
+}
+
+GET /actors_db/_analyze
+{
+ "text": ["இயக்குனராகவும் இருந்த நடிகர்கள்"],
+ "analyzer": "my_analyzer"
+}
+
+GET /actors_db/_analyze
+{
+ "text": ["மிகசிறந்த  முன்னாள்  சென்னை நடிகர்கள்"],    
+ "analyzer": "my_analyzer"
+}
+
+
 ```
 ```
 # Uploading data using bulk API
@@ -277,12 +302,12 @@ GET /actors_db/_search
  
  ```
  ```
- #நடிகர் name ending in ன்
-GET /songs_db/_search
+ #நடிகர் name ending in ய்
+GET /actors_db/_search
 {
    "query": {
        "wildcard" : {
-           "நடிகர்" : "*ன்"
+           "நடிகர்" : "*ய்"
        }
    },
    "_source": ["நடிகர்"],
@@ -368,7 +393,8 @@ GET /actors_db/_search
  },
  "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்" ]
 }
-
+```
+```
 # for multiple indexes(databases) search
 GET /_all/_search
 {
@@ -381,5 +407,32 @@ GET /_all/_search
 }
 
 ```
-  
+Can search for players only with விபரம் (Text Mining)
+```
+GET /actors_db/_search
+{
+  "query": {
+    "more_like_this" : {
+      "fields" : ["குறிப்பிடத்தக்க படங்கள்"],  
+      "like" : "இவர் கண்ணாமூச்சிஏனடா திரைப்படத்தில் நடித்த நடிகர் ஆவார்",
+      "min_term_freq" : 1,
+      "max_query_terms" : 12
+    }
+  }
+}
+
+GET /actors_db/_search
+{
+  "query": {
+    "more_like_this" : {
+      "fields" : ["பிறந்த இடம்"],  
+      "like" : "சென்னை யில் பிறந்த நடிகர்கள்",
+      "min_term_freq" : 1,
+      "max_query_terms" : 12
+    }
+  }
+}
+
+```
+ 
    
