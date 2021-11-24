@@ -74,21 +74,24 @@ PUT /actors_db/
            }
        }
    }
-   
+```
+```
 # checking the custom analyzer(stopwords, stemming)
 GET /actors_db/_analyze
 {
  "text": ["மிகவும்சிறப்பான 10 தமிழ்த்திரைப்படநடிகர்கள்"],
  "analyzer": "my_analyzer"
 }
-
+```
+```
 # Uploading data using bulk API
 POST /_bulk
 { "index" : { "_index" : "actors_db", "_type" : "actors", "_id" :1 } }
 { "நடிகர்" : "வினய்","அறிமுகஆண்டு":"2007","அறிமுகதிரைபடம்":"உன்னாலே உன்னாலே","பாலினம்":"ஆண்","குறிப்பிடத்தக்க படங்கள்":"உன்னாலே உன்னாலே, வானா,ஜெயம் கொண்டான்,டேம் 999","பிறப்பு":"1979","அகவை":"44","பிறந்த இடம்":"பெங்களூர், இந்தியா","பணி":"நடிகர்","திரைப்பட எண்ணிக்கை":"15"  }
 { "index" : { "_index" : "actors_db", "_type" : "actors", "_id" :2 } }
 {"நடிகர்":"கார்த்திக் சிவகுமார் ","அறிமுகஆண்டு":"2007","அறிமுகதிரைபடம்":"பருத்திவீரன்","பாலினம்":"ஆண்","குறிப்பிடத்தக்க படங்கள்":"பருத்தி வீரன்,ஆயிரத்தில் ஒருவன்,பையா, நான் மகான் அல்ல,சகுனி, கொம்பன்,காற்று வெளியிடை","பிறப்பு":"1977","அகவை":"44","பிறந்த இடம்":"சென்னை, தமிழ்நாடு, இந்தியா","பணி":"நடிகர்","திரைப்பட எண்ணிக்கை":"30"  }
-
+```
+```
 # Using custom indexing for search
 # பிரித்வராஜ் details with spelling mistake
 GET /actors_db/actors/_search
@@ -101,7 +104,8 @@ GET /actors_db/actors/_search
        }
    }
 }
-
+```
+```
 # Using standard indexing for search
 # பிரித்வராஜ் details with spelling mistake
 GET /actors_db/actors/_search
@@ -114,7 +118,8 @@ GET /actors_db/actors/_search
        }
    }
 }
-
+```
+```
 # top 10 actors introduced within 1990 to 2010 using திரைப்பட எண்ணிக்கை"
 GET /actors_db/actors/_search
 {
@@ -131,7 +136,8 @@ GET /actors_db/actors/_search
        }
    }
 }
-
+```
+```
 # top 10 actors born within 1970 to 1990 using திரைப்பட எண்ணிக்கை"
 GET /actors_db/actors/_search
 {
@@ -166,7 +172,8 @@ GET /actors_db/actors/_search?filter_path=hits.hits._source.நடிகர்,h
        }
    }
 }
-
+```
+```
 # top 10 actors introduced within 2000 to 2010 filter output
 GET /actors_db/actors/_search
 {
@@ -184,7 +191,8 @@ GET /actors_db/actors/_search
        }
    }
 }
-
+```
+```
 #  top 10 actors introduced from 2010
 GET /actors_db/actors/_search
 {
@@ -200,7 +208,8 @@ GET /actors_db/actors/_search
        }
    }
 }
-
+```
+```
 # நகைச்சுவைநடிகர் actors born in chennai 
 # comedy actors born in chennai 
 GET /actors_db/_search
@@ -217,7 +226,8 @@ GET /actors_db/_search
     } 
 }
 
-
+```
+```
 # கனாகண்டேன் நடித்த ஆனால் கனாகண்டேன் அறிமுகமாகாத நடிகர்கள்
 GET /actors_db/_search
 {
@@ -233,8 +243,8 @@ GET /actors_db/_search
  },
  "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்"]
 }
-
-
+```
+```
 
 #40 வயதுக்கு அதிகமான சென்னையில் பிறக்காத பின்னணிப் பாடகராகவும் இயக்குனராக உள்ள நடிகர்கள்
 GET /actors_db/_search
@@ -265,7 +275,8 @@ GET /actors_db/_search
   "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
  }
  
- 
+ ```
+ ```
  #நடிகர் name ending in ன்
 GET /songs_db/_search
 {
@@ -281,7 +292,8 @@ GET /songs_db/_search
        }
    }
 }
-
+```
+```
 #நடிகர் name starting with வி
 GET /actors_db/_search
 {
@@ -297,7 +309,8 @@ GET /actors_db/_search
        }
    }
 }
-
+```
+```
  
 # top 10 Actors who are also directors
 GET /actors_db/_search
@@ -315,7 +328,8 @@ GET /actors_db/_search
  },
   "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
 }
-
+```
+```
 #LATEST actors introduced after 2000
 GET /actors_db/_search
 {
@@ -328,7 +342,8 @@ GET /actors_db/_search
    },
    "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
 }
-
+```
+```
 # search actors by movie
 GET /actors_db/_search
 {
@@ -341,7 +356,8 @@ GET /actors_db/_search
    },
     "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "குறிப்பிடத்தக்க படங்கள்" ]
 }
-
+```
+```
 #term query for exact match
 GET /actors_db/_search
 {
