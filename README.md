@@ -102,7 +102,7 @@ GET /actors_db/_analyze
 
 GET /actors_db/_analyze
 {
- "text": ["மிகசிறந்த  முன்னாள்  சென்னை நடிகர்கள்"],    
+ "text": ["மிகசிறந்த சென்னை நடிகர்கள்"],    
  "analyzer": "my_analyzer"
 }
 
