@@ -368,6 +368,45 @@ GET /actors_db/_search
    "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்", "பணி","அகவை" ]
 }
 ```
+actors work as  இயக்குனர் or தயாரிப்பாளர் and more than 50 திரைப்பட எண்ணிக்கை and அகவை greater than 40 and not born in சென்னை
+```
+
+GET /actors_db/_search
+{
+ "query": {
+   "bool": {
+     "must": {
+       "bool" : { 
+         "should": [
+           { "match": { "பணி": "இயக்குனர்" }},
+           { "match": { "பணி": "தயாரிப்பாளர்" }} 
+         ],
+         "filter": [ 
+       {
+         "range": {
+           "திரைப்பட எண்ணிக்கை" : {
+               "gte" : "50"
+           }
+        }
+        },
+        {
+           "range": {
+           "அகவை": {
+                "gte" : "40"
+           }
+           }
+         }
+       
+     ]
+       }
+     },
+      "must_not": { "match":  { "பிறந்த இடம்":"சென்னை" }}
+   }
+ },
+     "_source" : ["நடிகர்","அறிமுகஆண்டு","அறிமுகதிரைபடம்",  "பணி","அகவை","பிறந்த இடம்" ]
+}
+
+```
 ```
 # search actors by movie
 GET /actors_db/_search
