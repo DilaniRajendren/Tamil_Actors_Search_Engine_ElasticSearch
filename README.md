@@ -520,7 +520,7 @@ GET /_all/_search
 }
 
 ```
-### Can search for players only with விபரம் (Text Mining)
+### Can search for actors only with விபரம் (Text Mining)
 ```
 GET /actors_db/_search
 {
