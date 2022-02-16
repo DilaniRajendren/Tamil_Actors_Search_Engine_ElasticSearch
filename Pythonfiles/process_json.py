@@ -12,15 +12,15 @@ i=1
 for line in json_file:
     try:
         print(i)
-        song_json = json.loads(line)
+        actors_json = json.loads(line)
 
-        song_json["திரைப்பட எண்ணிக்கை"] = random.randint(1, 500)
+        actors_json["திரைப்பட எண்ணிக்கை"] = random.randint(1, 500)
 
         f.write('{ "index" : { "_index" : "actors_db", "_type" : "actors", "_id" :' + str(i) + ' } }\n')
-        json.dump(song_json, f, ensure_ascii=False)
+        json.dump(actors_json, f, ensure_ascii=False)
         f.write('\n')
         i += 1
-        print(song_json)
+        print(actors_json)
         print()
 
     except Exception as e:
