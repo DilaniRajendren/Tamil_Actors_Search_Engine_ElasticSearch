@@ -15,7 +15,7 @@ The repo contain more than 100 actors scrap from https://en.wikipedia.org/wiki/L
   
   ```
 Randomly selected 100 Actors data are scraped and fully traslated to Tamil in CSV file and some extra meta data suchas "திரைப்பட எண்ணிக்", "பிறந்த இடம்","பண"
-Randomly selected 500 songs data are fully translated to Tamil and extra metadata such as "மதிப்பீடு", "வகை", "கிளிக்குகள்" are added to improve the quality of the search.  preprocess-finalize.py is used to produce these JSON data.
+extra metadata such as "மதிப்பீடு", "வகை", "கிளிக்குகள்" are added to improve the quality of the search.  preprocess-finalize.py is used to produce these JSON data.
 
 ### Sample JSON data of a processed Actor
 
